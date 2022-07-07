@@ -13,6 +13,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { login } from '../redux/features/authSlice';
+import { GoogleLogin } from 'react-google-login';
+import { gapi } from 'gapi-script';
 
 
 const initialState = {
@@ -37,6 +39,14 @@ const Login = () => {
         error && toast.error(error);
     }, [error]);
 
+    gapi.load("client:auth2", () => {
+        gapi.client.init({
+            clientId:
+                "394690414160-qp153jod9qkbk0tq78f2v0sbeau9fhb3.apps.googleusercontent.com",
+            plugin_name: "travelling",
+        });
+    });
+
     const handleSubmit = e => {
         e.preventDefault();
         if (email && password) {
@@ -48,6 +58,14 @@ const Login = () => {
         let { name, value } = e.target;
         setFormValue({ ...formValue, [name]: value });
     };
+
+    const googleSuccess = res => {
+        console.log(res);
+    }
+
+    const googleFailure = err => {
+        console.log(err);
+    }
 
     return (
         <div
@@ -111,6 +129,28 @@ const Login = () => {
                             </MDBBtn>
                         </div>
                     </MDBValidation>
+                    <br />
+                    <GoogleLogin
+                        clientId="394690414160-qp153jod9qkbk0tq78f2v0sbeau9fhb3.apps.googleusercontent.com"
+                        render={(renderProps) => (
+                            < MDBBtn
+                                style={{ width: '100%' }}
+                                color='danger'
+                                onClick={(renderProps.onClick)}
+                                disabled={(renderProps.disabled)}
+                            >
+                                <MDBIcon
+                                    className='me-2'
+                                    fab
+                                    icon='google'
+                                />
+                                Google Sign IN
+                            </MDBBtn>
+                        )}
+                        onSuccess={googleSuccess}
+                        onFailure={googleFailure}
+                        cookiePolicy={'single_host_origin'}
+                    />
                 </MDBCardBody>
                 <MDBCardFooter>
                     <Link to='/register'>
