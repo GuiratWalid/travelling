@@ -9,6 +9,7 @@ import Header from './components/Header';
 import { setUser } from './redux/features/authSlice';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
+import AddEditTrip from './pages/AddEditTrip';
 
 
 const App = () => {
@@ -30,6 +31,8 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/addTrip" element={<AddEditTrip />} />
+          <Route path="/editTrip/:id" element={<AddEditTrip />} />
         </Routes>
       </div>
     </BrowserRouter>

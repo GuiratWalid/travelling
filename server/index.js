@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 
 import userRouter from "./routes/user.js";
+import tripRouter from "./routes/trip.js";
 
 
 dotenv.config();
@@ -25,6 +26,7 @@ app.use(express.urlencoded({
 app.use(cors());
 
 app.use("/users", userRouter);
+app.use("/trips", tripRouter);
 
 mongoose.connect(MONGODB_URL)
     .then(() => {

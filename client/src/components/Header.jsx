@@ -77,8 +77,8 @@ const Header = () => {
                             user?.result?._id && (
                                 <>
                                     <MDBNavbarItem>
-                                        <MDBNavbarLink href='/addTour'>
-                                            <p className='header-text'>Add Tour</p>
+                                        <MDBNavbarLink href='/addTrip'>
+                                            <p className='header-text'>Add Trip</p>
                                         </MDBNavbarLink>
                                     </MDBNavbarItem>
                                     <MDBNavbarItem>
