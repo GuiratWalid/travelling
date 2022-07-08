@@ -12,7 +12,7 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { login } from '../redux/features/authSlice';
+import { googleSignIn, login } from '../redux/features/authSlice';
 import { GoogleLogin } from 'react-google-login';
 import { gapi } from 'gapi-script';
 
@@ -60,12 +60,22 @@ const Login = () => {
     };
 
     const googleSuccess = res => {
-        console.log(res);
-    }
+        const email = res?.profileObj?.email;
+        const name = res?.profileObj?.name;
+        const token = res?.tokenId;
+        const googleId = res?.googleId;
+        const result = {
+            email,
+            name,
+            token,
+            googleId,
+        };
+        dispatch(googleSignIn({ result, navigate, toast }));
+    };
 
     const googleFailure = err => {
         console.log(err);
-    }
+    };
 
     return (
         <div
