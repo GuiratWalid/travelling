@@ -2,11 +2,8 @@ import React, { useState } from 'react';
 import {
     MDBCard,
     MDBCardBody,
-    MDBCardFooter,
     MDBValidation,
     MDBBtn,
-    MDBSpinner,
-    MDBInput
 } from 'mdb-react-ui-kit';
 import ChipInput from 'material-ui-chip-input';
 import FileBase from 'react-file-base64';
@@ -14,7 +11,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createTrip } from '../redux/api';
+import { createTrip } from '../redux/features/tripSlice';
 
 
 const initialState = {
@@ -37,19 +34,12 @@ const AddEditTrip = () => {
 
     const { title, description, tags } = tripData;
 
-    const [validTitle, setValidTitle] = useState(false);
-
-    const [validDescription, setValidDescription] = useState(false);
-
-    const [submit, setSubmit] = useState(false);
-
     useEffect(() => {
         error && toast.error(error);
     }, [error]);
 
     const handleSubmit = e => {
         e.preventDefault();
-        setSubmit(true);
         if (title && description && tags) {
             const updatedTripData = {
                 ...tripData,
@@ -58,7 +48,6 @@ const AddEditTrip = () => {
             };
             dispatch(createTrip({ updatedTripData, navigate, toast }))
             handleClear();
-            setSubmit(false);
         }
     };
 
@@ -104,31 +93,12 @@ const AddEditTrip = () => {
                                 type='text'
                                 value={title}
                                 name='title'
-                                onChange={e => {
-                                    onInputChange(e);
-                                    e.target.value ? setValidTitle(true) : setValidTitle(false);
-                                }
-                                }
-                                style={{
-                                    marginBottom: (submit && !validTitle) ? '5px' : '0'
-                                }}
+                                onChange={onInputChange}
                                 className='form-control'
                                 required
+                                invalid="true"
+                                validation="Please tap description"
                             />
-                            {
-                                submit && !validTitle && <p
-                                    style={{
-                                        color: '#fb3b1e',
-                                        textAlign: 'left',
-                                        fontSize: '14px',
-                                        marginTop: '0',
-                                        marginBottom: '0',
-                                        padding: '0'
-                                    }}
-                                >
-                                    Please provide title
-                                </p>
-                            }
                         </div>
                         <div className='col-md-12'>
                             <textarea
@@ -136,37 +106,18 @@ const AddEditTrip = () => {
                                 className='form-control'
                                 value={description}
                                 name='description'
-                                onChange={e => {
-                                    onInputChange(e);
-                                    e.target.value ? setValidDescription(true) : setValidDescription(false);
-                                }
-                                }
+                                onChange={onInputChange}
                                 style={{
-                                    height: '100px',
-                                    marginBottom: (submit && !validDescription) ? '5px' : '0'
+                                    height: '100px'
                                 }}
                                 required
-                            // invalid
-                            // validation='Please provide description'
+                                invalid="true"
+                                validation="Please tap description"
                             />
-                            {
-                                submit && !validDescription && <p
-                                    style={{
-                                        color: '#fb3b1e',
-                                        textAlign: 'left',
-                                        fontSize: '14px',
-                                        marginTop: '0',
-                                        marginBottom: '0',
-                                        padding: '0'
-                                    }}
-                                >
-                                    Please provide description
-                                </p>
-                            }
                         </div>
                         <div className="col-md-12">
                             <ChipInput
-                                name='tags'
+                                label='Tags'
                                 variant='outlined'
                                 placeholder='Enter Tag'
                                 fullWidth
@@ -184,16 +135,18 @@ const AddEditTrip = () => {
                         </div>
                         <div className="col-12">
                             <MDBBtn style={{ width: '100%' }}>Submit</MDBBtn>
-                            <MDBBtn
-                                style={{ width: '100%' }}
-                                className='mt-2'
-                                color='danger'
-                                onClick={handleClear}
-                            >
-                                Clear
-                            </MDBBtn>
                         </div>
                     </MDBValidation>
+                    <div className="col-12">
+                        <MDBBtn
+                            style={{ width: '100%' }}
+                            className='mt-2'
+                            color='danger'
+                            onClick={handleClear}
+                        >
+                            Clear
+                        </MDBBtn>
+                    </div>
                 </MDBCardBody>
             </MDBCard>
         </div>

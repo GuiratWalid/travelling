@@ -3,12 +3,23 @@ import * as api from '../api';
 
 
 export const createTrip = createAsyncThunk(
-    'trip/createTrip',
+    'trips/createTrip',
     async ({ updatedTripData, navigate, toast }, { rejectWithValue }) => {
         try {
             const response = await api.createTrip(updatedTripData);
             toast.success('Trip Added Successfully');
             navigate('/');
+            return response.data;
+        } catch (err) {
+            return rejectWithValue(err.response.data);
+        }
+    });
+
+export const getTrips = createAsyncThunk(
+    'trips/getTrips',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await api.getTrips();
             return response.data;
         } catch (err) {
             return rejectWithValue(err.response.data);
@@ -30,9 +41,20 @@ const tripSlice = createSlice({
         },
         [createTrip.fulfilled]: (state, action) => {
             state.loading = false;
-            state.tours = [action.payload];
+            state.trips = action.payload;
         },
         [createTrip.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload.message;
+        },
+        [getTrips.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [getTrips.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.trips = action.payload;
+        },
+        [getTrips.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload.message;
         },
