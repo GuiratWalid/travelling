@@ -26,6 +26,17 @@ export const getTrips = createAsyncThunk(
         }
     });
 
+export const getTrip = createAsyncThunk(
+    'trips/getTrip',
+    async (id, { rejectWithValue }) => {
+        try {
+            const response = await api.getTrip(id);
+            return response.data;
+        } catch (err) {
+            return rejectWithValue(err.response.data);
+        }
+    });
+
 const tripSlice = createSlice({
     name: 'trip',
     initialState: {
@@ -55,6 +66,17 @@ const tripSlice = createSlice({
             state.trips = action.payload;
         },
         [getTrips.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload.message;
+        },
+        [getTrip.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [getTrip.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.trip = action.payload;
+        },
+        [getTrip.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload.message;
         },

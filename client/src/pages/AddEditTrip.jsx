@@ -4,6 +4,7 @@ import {
     MDBCardBody,
     MDBValidation,
     MDBBtn,
+    MDBSpinner,
 } from 'mdb-react-ui-kit';
 import ChipInput from 'material-ui-chip-input';
 import FileBase from 'react-file-base64';
@@ -134,7 +135,19 @@ const AddEditTrip = () => {
                             />
                         </div>
                         <div className="col-12">
-                            <MDBBtn style={{ width: '100%' }}>Submit</MDBBtn>
+                            <MDBBtn style={{ width: '100%' }}>
+                                {
+                                    loading && (
+                                        <MDBSpinner
+                                            size='sm'
+                                            role='status'
+                                            tag='span'
+                                            className='me-2'
+                                        />
+                                    )
+                                }
+                                Submit
+                            </MDBBtn>
                         </div>
                     </MDBValidation>
                     <div className="col-12">

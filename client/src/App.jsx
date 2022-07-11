@@ -10,6 +10,7 @@ import { setUser } from './redux/features/authSlice';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import AddEditTrip from './pages/AddEditTrip';
+import SingleTrip from './pages/SingleTrip';
 
 
 const App = () => {
@@ -33,6 +34,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/addTrip" element={<AddEditTrip />} />
           <Route path="/editTrip/:id" element={<AddEditTrip />} />
+          <Route path="/trip/:id" element={<SingleTrip />} />
         </Routes>
       </div>
     </BrowserRouter>
