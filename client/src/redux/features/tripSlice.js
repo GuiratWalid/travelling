@@ -60,6 +60,19 @@ export const deleteTrip = createAsyncThunk(
         }
     });
 
+export const updateTrip = createAsyncThunk(
+    'trips/updateTrip',
+    async ({ id, updatedTripData, toast, navigate }, { rejectWithValue }) => {
+        try {
+            const response = await api.updateTrip(updatedTripData, id);
+            toast.success('Trip Updated Successfully')
+            navigate('/');
+            return response.data;
+        } catch (err) {
+            return rejectWithValue(err.response.data);
+        }
+    });
+
 const tripSlice = createSlice({
     name: 'trip',
     initialState: {
@@ -75,7 +88,7 @@ const tripSlice = createSlice({
         },
         [createTrip.fulfilled]: (state, action) => {
             state.loading = false;
-            state.trips = action.payload;
+            state.trips = [...state.trips, action.payload];
         },
         [createTrip.rejected]: (state, action) => {
             state.loading = false;
@@ -119,14 +132,28 @@ const tripSlice = createSlice({
         },
         [deleteTrip.fulfilled]: (state, action) => {
             state.loading = false;
-            const { arg } = action.meta;
-            console.log(arg)
-            if (arg) {
-                state.userTrips = state.userTrips.filter(item => item._id !== arg.id);
-                state.trips = state.trips.filter(item => item._id !== arg.id);
+            const { arg: { id } } = action.meta;
+            if (id) {
+                state.userTrips = state.userTrips.filter(item => item._id !== id);
+                state.trips = state.trips.filter(item => item._id !== id);
             }
         },
         [deleteTrip.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload.message;
+        },
+        [updateTrip.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [updateTrip.fulfilled]: (state, action) => {
+            state.loading = false;
+            const { arg: { id } } = action.meta;
+            if (id) {
+                state.userTrips = state.userTrips.map(item => item._id === id ? action.payload : item);
+                state.trips = state.trips.map(item => item._id === id ? action.payload : item);
+            }
+        },
+        [updateTrip.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload.message;
         },

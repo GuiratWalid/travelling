@@ -9,10 +9,10 @@ import {
 import ChipInput from 'material-ui-chip-input';
 import FileBase from 'react-file-base64';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createTrip } from '../redux/features/tripSlice';
+import { createTrip, updateTrip } from '../redux/features/tripSlice';
 
 
 const initialState = {
@@ -25,7 +25,7 @@ const AddEditTrip = () => {
 
     const [tripData, setTripData] = useState(initialState);
 
-    const { error, loading } = useSelector(state => ({ ...state.trip }));
+    const { error, loading, userTrips } = useSelector(state => ({ ...state.trip }));
 
     const { user } = useSelector(state => ({ ...state.auth }));
 
@@ -35,9 +35,18 @@ const AddEditTrip = () => {
 
     const { title, description, tags } = tripData;
 
+    const { id } = useParams();
+
     useEffect(() => {
         error && toast.error(error);
     }, [error]);
+
+    useEffect(() => {
+        if (id) {
+            const singleTrip = userTrips.find(trip => trip._id === id);
+            setTripData({ ...singleTrip });
+        }
+    }, [id]);
 
     const handleSubmit = e => {
         e.preventDefault();
@@ -47,7 +56,10 @@ const AddEditTrip = () => {
                 tags: [...tripData.tags],
                 name: user?.result?.name,
             };
-            dispatch(createTrip({ updatedTripData, navigate, toast }))
+            if (!id)
+                dispatch(createTrip({ updatedTripData, navigate, toast }))
+            else
+                dispatch(updateTrip({ id, updatedTripData, toast, navigate }))
             handleClear();
         }
     };
@@ -81,7 +93,7 @@ const AddEditTrip = () => {
             className='container'
         >
             <MDBCard alignment='center'>
-                <h5>Add Trip</h5>
+                <h5>{id ? 'Update Trip' : 'Add Trip'}</h5>
                 <MDBCardBody>
                     <MDBValidation
                         onSubmit={handleSubmit}
@@ -146,7 +158,7 @@ const AddEditTrip = () => {
                                         />
                                     )
                                 }
-                                Submit
+                                {id ? 'Update' : 'Submit'}
                             </MDBBtn>
                         </div>
                     </MDBValidation>

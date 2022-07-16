@@ -30,7 +30,7 @@ const CardTrip = ({ imageFile, description, title, tags, _id, name }) => {
                     position='top'
                     style={{
                         maxWidth: '100%',
-                        height: '100px'
+                        height: '200px'
                     }}
                 />
                 <div className="top-left">

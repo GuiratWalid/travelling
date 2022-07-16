@@ -35,7 +35,7 @@ const SingleTrip = () => {
                         position='top'
                         style={{
                             width: '100%',
-                            maxHeight: '600px',
+                            maxHeight: '600px'
                         }}
                         src={trip?.imageFile}
                         alt={trip?.title}
