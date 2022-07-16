@@ -37,6 +37,29 @@ export const getTrip = createAsyncThunk(
         }
     });
 
+export const getTripsByUser = createAsyncThunk(
+    'trips/getTripsByUser',
+    async (id, { rejectWithValue }) => {
+        try {
+            const response = await api.getTripsByUser(id);
+            return response.data;
+        } catch (err) {
+            return rejectWithValue(err.response.data);
+        }
+    });
+
+export const deleteTrip = createAsyncThunk(
+    'trips/deleteTrip',
+    async ({ id, toast }, { rejectWithValue }) => {
+        try {
+            const response = await api.deleteTrip(id);
+            toast.success('Trip Deleted Successfully')
+            return response.data;
+        } catch (err) {
+            return rejectWithValue(err.response.data);
+        }
+    });
+
 const tripSlice = createSlice({
     name: 'trip',
     initialState: {
@@ -77,6 +100,33 @@ const tripSlice = createSlice({
             state.trip = action.payload;
         },
         [getTrip.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload.message;
+        },
+        [getTripsByUser.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [getTripsByUser.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.userTrips = action.payload;
+        },
+        [getTripsByUser.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload.message;
+        },
+        [deleteTrip.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [deleteTrip.fulfilled]: (state, action) => {
+            state.loading = false;
+            const { arg } = action.meta;
+            console.log(arg)
+            if (arg) {
+                state.userTrips = state.userTrips.filter(item => item._id !== arg.id);
+                state.trips = state.trips.filter(item => item._id !== arg.id);
+            }
+        },
+        [deleteTrip.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload.message;
         },

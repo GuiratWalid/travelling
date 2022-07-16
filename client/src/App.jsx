@@ -11,6 +11,8 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import AddEditTrip from './pages/AddEditTrip';
 import SingleTrip from './pages/SingleTrip';
+import Dashboard from './pages/Dashboard';
+import PrivateRoute from './components/PrivateRoute';
 
 
 const App = () => {
@@ -32,9 +34,34 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/addTrip" element={<AddEditTrip />} />
-          <Route path="/editTrip/:id" element={<AddEditTrip />} />
-          <Route path="/trip/:id" element={<SingleTrip />} />
+          <Route
+            path="/addTrip"
+            element={
+              <PrivateRoute>
+                <AddEditTrip />
+              </PrivateRoute>
+            } />
+          <Route
+            path="/editTrip/:id"
+            element={
+              <PrivateRoute>
+                <AddEditTrip />
+              </PrivateRoute>
+            } />
+          <Route
+            path="/trip/:id"
+            element={
+              <PrivateRoute>
+                <SingleTrip />
+              </PrivateRoute>
+            } />
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            } />
         </Routes>
       </div>
     </BrowserRouter>

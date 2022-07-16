@@ -25,3 +25,9 @@ export const createTrip = tripData => API.post('/trips/', tripData);
 export const getTrips = () => API.get('/trips/');
 
 export const getTrip = id => API.get(`/trips/${id}`);
+
+export const deleteTrip = id => API.delete(`/trips/${id}`);
+
+export const updateTrip = (tripData, id) => API.patch(`/trips/${id}`, tripData);
+
+export const getTripsByUser = userId => API.get(`/trips/userTrips/${userId}`);

@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getTrips } from '../redux/features/tripSlice';
 import CardTrip from '../components/CardTrip';
+import Spinner from '../components/Spinner';
 
 
 const Home = () => {
@@ -22,7 +23,11 @@ const Home = () => {
     }, []);
 
     if (loading) {
-        return <h2><br /><br /><br />Loading ...</h2>
+        return (
+            <div style={{ marginTop: '180px' }}>
+                <Spinner />
+            </div>
+        );
     }
 
     return (
