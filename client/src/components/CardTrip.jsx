@@ -38,7 +38,11 @@ const CardTrip = ({ imageFile, description, title, tags, _id, name }) => {
                 </div>
                 <span className="text-start tag-card">
                     {
-                        tags.map(item => `#${item} `)
+                        tags.map(tag => (
+                            <Link key={tag} to={`/trips/tag/${tag}`}>
+                                {`#${tag} `}
+                            </Link>
+                        ))
                     }
                 </span>
                 <MDBCardBody>

@@ -30,7 +30,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         user && dispatch(getTripsByUser(userId));
-    }, [userId]);
+    }, [userId, user, dispatch]);
 
     const exception = str => {
         if (str?.length > 45)

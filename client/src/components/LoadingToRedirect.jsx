@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Spinner from './Spinner';
 
 
-const LoadingToRedirect = () => {
+const LoadingToRedirect = ({ path }) => {
 
     const [count, setCount] = useState(3);
 
@@ -13,9 +13,9 @@ const LoadingToRedirect = () => {
         const interval = setInterval(() => {
             setCount(curretnCount => --curretnCount);
         }, 1000);
-        count === 0 && navigate('/login');
+        count === 0 && navigate(path);
         return () => clearInterval(interval);
-    }, [count, navigate]);
+    }, [count, navigate, path]);
 
     return (
         <div style={{ marginTop: '150px' }}>

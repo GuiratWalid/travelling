@@ -1,5 +1,5 @@
 import './App.css';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import "react-toastify/dist/ReactToastify.css";
 import Home from './pages/Home';
@@ -13,6 +13,9 @@ import AddEditTrip from './pages/AddEditTrip';
 import SingleTrip from './pages/SingleTrip';
 import Dashboard from './pages/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
+import NotFound from './pages/NotFound';
+import PublicRoute from './components/PublicRoute';
+import TagTrips from './pages/TagTrips';
 
 
 const App = () => {
@@ -23,7 +26,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(setUser(user));
-  }, []);
+  }, [dispatch, user]);
 
   return (
     <BrowserRouter>
@@ -31,9 +34,35 @@ const App = () => {
         <Header />
         <ToastContainer />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route
+            path="/"
+            element={
+              <Home />
+            } />
+          <Route
+            path="/trips/search"
+            element={
+              <Home />
+            } />
+          <Route
+            path="/trips/tag/:tag"
+            element={
+              <TagTrips />
+            } />
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            } />
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <Register />
+              </PublicRoute>
+            } />
           <Route
             path="/addTrip"
             element={
@@ -61,6 +90,11 @@ const App = () => {
               <PrivateRoute>
                 <Dashboard />
               </PrivateRoute>
+            } />
+          <Route
+            path="*"
+            element={
+              <NotFound />
             } />
         </Routes>
       </div>

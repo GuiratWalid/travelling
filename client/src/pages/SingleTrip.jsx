@@ -11,19 +11,28 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getTrip } from '../redux/features/tripSlice';
 import moment from 'moment';
+import Spinner from '../components/Spinner';
 
 
 const SingleTrip = () => {
 
     const dispatch = useDispatch();
 
-    const { trip } = useSelector(state => ({ ...state.trip }));
+    const { trip, loading } = useSelector(state => ({ ...state.trip }));
 
     const { id } = useParams();
 
     useEffect(() => {
         dispatch(getTrip(id));
-    }, []);
+    }, [dispatch, id]);
+
+    if (loading) {
+        return (
+            <div style={{ marginTop: '180px' }}>
+                <Spinner />
+            </div>
+        );
+    }
 
     return (
         <div style={{ marginTop: '85px' }}>

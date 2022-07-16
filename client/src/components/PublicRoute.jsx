@@ -3,12 +3,12 @@ import { useSelector } from 'react-redux';
 import LoadingToRedirect from './LoadingToRedirect';
 
 
-const PrivateRoute = ({ children }) => {
+const PublicRoute = ({ children }) => {
 
     const { user } = useSelector(state => ({ ...state.auth }));
 
-    return user ? children : <LoadingToRedirect path='/login' />;
+    return user ? <LoadingToRedirect path='/' /> : children;
 };
 
 
-export default PrivateRoute;
+export default PublicRoute;

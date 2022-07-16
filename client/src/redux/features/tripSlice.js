@@ -73,12 +73,35 @@ export const updateTrip = createAsyncThunk(
         }
     });
 
+export const getTripsBySearch = createAsyncThunk(
+    'trips/getTripsBySearch',
+    async (searchQuery, { rejectWithValue }) => {
+        try {
+            const response = await api.getTripsBySearch(searchQuery);
+            return response.data;
+        } catch (err) {
+            return rejectWithValue(err.response.data);
+        }
+    });
+
+export const getTripsByTag = createAsyncThunk(
+    'trips/getTripsByTag',
+    async (tag, { rejectWithValue }) => {
+        try {
+            const response = await api.getTripsByTag(tag);
+            return response.data;
+        } catch (err) {
+            return rejectWithValue(err.response.data);
+        }
+    });
+
 const tripSlice = createSlice({
     name: 'trip',
     initialState: {
         trip: {},
         trips: [],
         userTrips: [],
+        tagTrips: [],
         error: '',
         loading: false,
     },
@@ -154,6 +177,28 @@ const tripSlice = createSlice({
             }
         },
         [updateTrip.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload.message;
+        },
+        [getTripsBySearch.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [getTripsBySearch.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.trips = action.payload;
+        },
+        [getTripsBySearch.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload.message;
+        },
+        [getTripsByTag.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [getTripsByTag.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.tagTrips = action.payload;
+        },
+        [getTripsByTag.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload.message;
         },

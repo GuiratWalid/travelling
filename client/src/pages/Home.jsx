@@ -6,7 +6,6 @@ import {
     MDBTypography,
 } from 'mdb-react-ui-kit';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { getTrips } from '../redux/features/tripSlice';
 import CardTrip from '../components/CardTrip';
 import Spinner from '../components/Spinner';
@@ -20,7 +19,7 @@ const Home = () => {
 
     useEffect(() => {
         dispatch(getTrips());
-    }, []);
+    }, [dispatch]);
 
     if (loading) {
         return (
@@ -37,7 +36,6 @@ const Home = () => {
                 padding: '15px',
                 maxWidth: '1000px',
                 alignContent: 'center',
-
             }}
         >
             <MDBRow className='mt-5'>
@@ -45,6 +43,7 @@ const Home = () => {
                     trips.length === 0 && (
                         <MDBTypography
                             className='text-center mb-0'
+                            style={{ marginTop: '200px' }}
                             tag="h2"
                         >
                             No Trips Found

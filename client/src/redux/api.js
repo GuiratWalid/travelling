@@ -31,3 +31,7 @@ export const deleteTrip = id => API.delete(`/trips/${id}`);
 export const updateTrip = (tripData, id) => API.patch(`/trips/${id}`, tripData);
 
 export const getTripsByUser = userId => API.get(`/trips/userTrips/${userId}`);
+
+export const getTripsBySearch = searchQuery => API.get(`/trips/search?searchQuery=${searchQuery}`);
+
+export const getTripsByTag = tag => API.get(`/trips/tag/${tag}`);

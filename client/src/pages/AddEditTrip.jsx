@@ -5,6 +5,7 @@ import {
     MDBValidation,
     MDBBtn,
     MDBSpinner,
+    MDBInput,
 } from 'mdb-react-ui-kit';
 import ChipInput from 'material-ui-chip-input';
 import FileBase from 'react-file-base64';
@@ -24,6 +25,8 @@ const initialState = {
 const AddEditTrip = () => {
 
     const [tripData, setTripData] = useState(initialState);
+
+    const [tagErrMsg, setTagErrMsg] = useState(null);
 
     const { error, loading, userTrips } = useSelector(state => ({ ...state.trip }));
 
@@ -46,10 +49,13 @@ const AddEditTrip = () => {
             const singleTrip = userTrips.find(trip => trip._id === id);
             setTripData({ ...singleTrip });
         }
-    }, [id]);
+    }, [id, userTrips]);
 
     const handleSubmit = e => {
         e.preventDefault();
+        if (!tags.length) {
+            setTagErrMsg('Please provide some tags');
+        }
         if (title && description && tags) {
             const updatedTripData = {
                 ...tripData,
@@ -70,6 +76,7 @@ const AddEditTrip = () => {
     };
 
     const handleAddTag = tag => {
+        setTagErrMsg(null);
         setTripData({ ...tripData, tags: [...tripData.tags, tag] })
     };
 
@@ -101,7 +108,8 @@ const AddEditTrip = () => {
                         noValidate
                     >
                         <div className='col-md-12'>
-                            <input
+                            <MDBInput
+                                label='Title'
                                 placeholder='Enter Title'
                                 type='text'
                                 value={title}
@@ -109,12 +117,13 @@ const AddEditTrip = () => {
                                 onChange={onInputChange}
                                 className='form-control'
                                 required
-                                invalid="true"
+                                invalid
                                 validation="Please tap description"
                             />
                         </div>
                         <div className='col-md-12'>
-                            <textarea
+                            <MDBInput
+                                label='Description'
                                 placeholder='Enter Description'
                                 className='form-control'
                                 value={description}
@@ -123,8 +132,10 @@ const AddEditTrip = () => {
                                 style={{
                                     height: '100px'
                                 }}
+                                textarea
                                 required
-                                invalid="true"
+                                invalid
+                                rows={4}
                                 validation="Please tap description"
                             />
                         </div>
@@ -138,6 +149,11 @@ const AddEditTrip = () => {
                                 onAdd={tag => handleAddTag(tag)}
                                 onDelete={tag => handleDeleteTag(tag)}
                             />
+                            {tagErrMsg && (
+                                <div className="tagErrMsg">
+                                    {tagErrMsg}
+                                </div>
+                            )}
                         </div>
                         <div className="d-flex justify-content-start">
                             <FileBase
