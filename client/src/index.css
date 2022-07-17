@@ -44,3 +44,24 @@ code {
   text-align: left;
   font-size: 14px;
 }
+
+h4:before,
+h4:after {
+  background-color: #000;
+  content: "";
+  display: inline-block;
+  height: 1px;
+  position: relative;
+  vertical-align: middle;
+  width: 50%;
+}
+
+h4:before {
+  right: 0.5rem;
+  margin-left: -50%;
+}
+
+h4:after {
+  left: 0.5rem;
+  margin-right: -50%;
+}

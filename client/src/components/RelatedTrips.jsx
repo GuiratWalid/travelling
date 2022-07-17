@@ -22,8 +22,8 @@ const RelatedTrips = ({ relatedTrips, tripId }) => {
                 relatedTrips?.length > 0 &&
                 (
                     <>
-                        {relatedTrips > 1 && <h4>Related Trips</h4>}
-                        <MDBRow className="row-cols-1 row-cols-md-3 g-4">
+                        {relatedTrips.length > 1 && <h4>Related Trips</h4>}
+                        <MDBRow className="row-cols-1 row-cols-md-3 g-4 mb-1">
                             {
                                 relatedTrips
                                     .filter(item => item._id !== tripId)

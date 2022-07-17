@@ -28,6 +28,8 @@ const Header = () => {
 
     const navigate = useNavigate();
 
+    const token = user?.token;
+
     const handleLogout = () => {
         dispatch(setLogout());
     };
