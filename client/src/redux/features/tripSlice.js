@@ -17,9 +17,9 @@ export const createTrip = createAsyncThunk(
 
 export const getTrips = createAsyncThunk(
     'trips/getTrips',
-    async (_, { rejectWithValue }) => {
+    async (page, { rejectWithValue }) => {
         try {
-            const response = await api.getTrips();
+            const response = await api.getTrips(page);
             return response.data;
         } catch (err) {
             return rejectWithValue(err.response.data);
@@ -114,8 +114,15 @@ const tripSlice = createSlice({
         userTrips: [],
         relatedTrips: [],
         tagTrips: [],
+        currentPage: 1,
+        numberOfPages: null,
         error: '',
         loading: false,
+    },
+    reducers: {
+        setCurrentPage: (state, action) => {
+            state.currentPage = action.payload;
+        }
     },
     extraReducers: {
         [createTrip.pending]: (state, action) => {
@@ -134,7 +141,9 @@ const tripSlice = createSlice({
         },
         [getTrips.fulfilled]: (state, action) => {
             state.loading = false;
-            state.trips = action.payload;
+            state.trips = action.payload.data;
+            state.numberOfPages = action.payload.numberOfPages;
+            state.currentPage = action.payload.currentPage;
         },
         [getTrips.rejected]: (state, action) => {
             state.loading = false;
@@ -228,5 +237,7 @@ const tripSlice = createSlice({
     },
 });
 
+
+export const { setCurrentPage } = tripSlice.actions;
 
 export default tripSlice.reducer;

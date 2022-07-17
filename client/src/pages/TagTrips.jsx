@@ -30,7 +30,7 @@ const TagTrips = () => {
     useEffect(() => {
         if (tag)
             dispatch(getTripsByTag(tag));
-    }, [tag]);
+    }, [dispatch, tag]);
 
     if (loading) {
         return (

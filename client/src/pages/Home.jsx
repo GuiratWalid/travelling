@@ -9,17 +9,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getTrips } from '../redux/features/tripSlice';
 import CardTrip from '../components/CardTrip';
 import Spinner from '../components/Spinner';
+import Pagination from '../components/Pagination';
+import { setCurrentPage } from '../redux/features/tripSlice';
 
 
 const Home = () => {
 
-    const { trips, loading } = useSelector(state => ({ ...state.trip }));
+    const { trips, loading, currentPage, numberOfPages } = useSelector(state => ({ ...state.trip }));
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getTrips());
-    }, [dispatch]);
+        dispatch(getTrips(currentPage));
+    }, [dispatch, currentPage]);
 
     if (loading) {
         return (
@@ -50,26 +52,32 @@ const Home = () => {
                         </MDBTypography>
                     )
                 }
+                <MDBCol>
+                    <MDBContainer>
+                        <MDBRow className='row-cols-1 row-cols-md-3 g-2'>
+                            {
+                                trips?.map(({ imageFile, description, title, tags, _id, name }) =>
+                                    <CardTrip
+                                        key={_id}
+                                        title={title}
+                                        imageFile={imageFile}
+                                        description={description}
+                                        tags={tags}
+                                        _id={_id}
+                                        name={name}
+                                    />
+                                )
+                            }
+                        </MDBRow>
+                    </MDBContainer>
+                </MDBCol>
             </MDBRow>
-            <MDBCol>
-                <MDBContainer>
-                    <MDBRow className='row-cols-1 row-cols-md-3 g-2'>
-                        {
-                            trips?.map(({ imageFile, description, title, tags, _id, name }) =>
-                                <CardTrip
-                                    key={_id}
-                                    title={title}
-                                    imageFile={imageFile}
-                                    description={description}
-                                    tags={tags}
-                                    _id={_id}
-                                    name={name}
-                                />
-                            )
-                        }
-                    </MDBRow>
-                </MDBContainer>
-            </MDBCol>
+            <Pagination
+                setCurrecntPage={setCurrentPage}
+                currentPage={currentPage}
+                dispatch={dispatch}
+                numberOfPages={numberOfPages}
+            />
         </div>
     );
 };

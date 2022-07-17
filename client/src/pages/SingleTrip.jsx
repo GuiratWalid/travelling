@@ -27,7 +27,7 @@ const SingleTrip = () => {
 
     useEffect(() => {
         tags && dispatch(getRelatedTrips(tags));
-    }, [tags]);
+    }, [dispatch, tags]);
 
     useEffect(() => {
         dispatch(getTrip(id));

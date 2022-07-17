@@ -22,7 +22,7 @@ export const googleSignIn = result => API.post('/users/googlesignin', result);
 
 export const createTrip = tripData => API.post('/trips/', tripData);
 
-export const getTrips = () => API.get('/trips/');
+export const getTrips = page => API.get(`/trips?page=${page}`);
 
 export const getTrip = id => API.get(`/trips/${id}`);
 

@@ -14,6 +14,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setLogout } from '../redux/features/authSlice';
 import { getTripsBySearch } from '../redux/features/tripSlice';
 import { useNavigate } from 'react-router-dom';
+import decode from 'jwt-decode';
 
 
 const Header = () => {
@@ -29,6 +30,12 @@ const Header = () => {
     const navigate = useNavigate();
 
     const token = user?.token;
+
+    if (token) {
+        const decodedToken = decode(token);
+        if (decodedToken.exp * 1000 < new Date())
+            dispatch(setLogout());
+    }
 
     const handleLogout = () => {
         dispatch(setLogout());

@@ -19,9 +19,20 @@ export const createTrip = async (req, res) => {
 };
 
 export const getTrips = async (req, res) => {
+    const { page } = req.query;
     try {
-        const trips = await TripModel.find();
-        res.status(201).json(trips);
+        // const trips = await TripModel.find();
+        // res.status(201).json(trips);
+        const limit = 2;
+        const startIndex = (Number(page) - 1) * limit;
+        const total = await TripModel.countDocuments({});
+        const trips = await TripModel.find().limit(limit).skip(startIndex);
+        res.status(201).json({
+            data: trips,
+            currentPage: Number(page),
+            totalTrips: total,
+            numberOfPages: Math.ceil(total / limit),
+        });
     }
     catch (err) {
         res.status(404).json({ message: 'Something went wrong' });
