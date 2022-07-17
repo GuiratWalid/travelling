@@ -37,3 +37,5 @@ export const getTripsBySearch = searchQuery => API.get(`/trips/search?searchQuer
 export const getTripsByTag = tag => API.get(`/trips/tag/${tag}`);
 
 export const getRelatedTrips = tags => API.post(`/trips/relatedTrips`, { tags });
+
+export const likeTrip = id => API.patch(`/trips/like/${id}`);

@@ -23,7 +23,7 @@ export const getTrips = async (req, res) => {
     try {
         // const trips = await TripModel.find();
         // res.status(201).json(trips);
-        const limit = 2;
+        const limit = 6;
         const startIndex = (Number(page) - 1) * limit;
         const total = await TripModel.countDocuments({});
         const trips = await TripModel.find().limit(limit).skip(startIndex);
@@ -129,10 +129,31 @@ export const getTripsByTag = async (req, res) => {
 
 export const getRelatedTrips = async (req, res) => {
     const { tags } = req.body;
-    console.log(tags)
     try {
         const trips = await TripModel.find({ tags: { $in: tags } });
         res.status(201).json(trips);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(404).json({ message: 'Something went wrong' });
+    }
+};
+
+export const likeTrip = async (req, res) => {
+    const { id } = req.params;
+    try {
+        if (!req.userId)
+            return res.status(400).json({ message: 'User is not authenticated' })
+        if (!mongoose.Types.ObjectId.isValid(id))
+            return res.status(404).json({ message: `No trip exist with id: ${id}` });
+        const trip = await TripModel.findById(id);
+        const index = trip.likes.findIndex(id => id === String(req.userId));
+        if (index === -1)
+            trip.likes.push(req.userId);
+        else
+            trip.likes = trip.likes.filter(id => id !== String(req.userId));
+        const updatedTrip = await TripModel.findByIdAndUpdate(id, trip, { new: true });
+        return res.status(201).json(updatedTrip);
     }
     catch (err) {
         console.log(err);

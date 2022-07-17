@@ -8,6 +8,7 @@ import {
     getTripsBySearch,
     getTripsByTag,
     getTripsByUser,
+    likeTrip,
     updateTrip
 } from "../controllers/trip.js";
 import auth from "../middlewares/auth.js";
@@ -32,6 +33,8 @@ router.get("/userTrips/:id", auth, getTripsByUser);
 router.delete("/:id", auth, deleteTrip);
 
 router.patch("/:id", auth, updateTrip);
+
+router.patch("/like/:id", auth, likeTrip);
 
 
 export default router;

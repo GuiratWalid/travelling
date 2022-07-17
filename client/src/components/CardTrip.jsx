@@ -1,17 +1,75 @@
 import React from 'react';
 import {
+    MDBBtn,
     MDBCard,
     MDBCardBody,
     MDBCardGroup,
     MDBCardImage,
     MDBCardText,
     MDBCardTitle,
+    MDBIcon,
+    MDBTooltip,
 } from 'mdb-react-ui-kit';
 import { Link } from 'react-router-dom';
 import exception from '../utility/exception';
+import { likeTrip } from '../redux/features/tripSlice';
+import { useSelector } from 'react-redux';
 
 
-const CardTrip = ({ imageFile, description, title, tags, _id, name }) => {
+const CardTrip = ({ dispatch, imageFile, description, title, tags, _id, name, likes }) => {
+
+    const { user } = useSelector(state => ({ ...state.auth }));
+
+    const userId = user?.result?._id || user?.result?.googleId;
+
+    const handleLikeClick = () => {
+        dispatch(likeTrip({ id: _id }));
+    };
+
+    const Likes = () => {
+        if (likes.length > 0)
+            return likes.find(like => like === userId) ? (
+                <>
+                    <MDBIcon
+                        fas
+                        size="lg"
+                        icon='thumbs-up'
+                    />
+                    &nbsp;
+                    {
+                        Likes.length > 2 ? (
+                            <MDBTooltip
+                                tag='a'
+                                title={`You and ${likes.length - 1} other likes`}
+                            >
+                                {likes.length} Likes
+                            </MDBTooltip>
+                        ) : (
+                            `${likes.length} Like${likes.length > 1 ? 's' : ''}`
+                        )
+                    }
+                </>
+            ) : (
+                <>
+                    <MDBIcon
+                        far
+                        size="lg"
+                        icon='thumbs-up'
+                    />
+                    &nbsp; {likes.length} {likes.length === 1 ? 'Like' : 'Likes'}
+                </>
+            )
+        return (
+            <>
+                <MDBIcon
+                    far
+                    size="lg"
+                    icon='thumbs-up'
+                />
+                &nbsp;Like
+            </>
+        )
+    }
 
     return (
         <MDBCardGroup>
@@ -39,6 +97,17 @@ const CardTrip = ({ imageFile, description, title, tags, _id, name }) => {
                             </Link>
                         ))
                     }
+                    <MDBBtn
+                        style={{
+                            float: 'right',
+                            marginRight: '10px'
+                        }}
+                        tag='a'
+                        color='none'
+                        onClick={handleLikeClick}
+                    >
+                        <Likes />
+                    </MDBBtn>
                 </span>
                 <MDBCardBody>
                     <MDBCardTitle

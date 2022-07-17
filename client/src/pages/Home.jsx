@@ -56,7 +56,7 @@ const Home = () => {
                     <MDBContainer>
                         <MDBRow className='row-cols-1 row-cols-md-3 g-2'>
                             {
-                                trips?.map(({ imageFile, description, title, tags, _id, name }) =>
+                                trips?.map(({ imageFile, description, title, tags, _id, name, likes }) =>
                                     <CardTrip
                                         key={_id}
                                         title={title}
@@ -65,6 +65,8 @@ const Home = () => {
                                         tags={tags}
                                         _id={_id}
                                         name={name}
+                                        likes={likes}
+                                        dispatch={dispatch}
                                     />
                                 )
                             }
