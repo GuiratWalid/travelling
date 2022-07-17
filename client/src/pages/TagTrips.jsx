@@ -6,13 +6,15 @@ import {
     MDBCardImage,
     MDBRow,
     MDBCol,
-    MDBBtn,
-    MDBCardGroup
+    MDBCardGroup,
+    MDBCardBody,
+    MDBBtn
 } from 'mdb-react-ui-kit';
 import { useNavigate, useParams } from 'react-router-dom';
 import Spinner from '../components/Spinner';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTripsByTag } from '../redux/features/tripSlice';
+import exception from '../utility/exception';
 
 
 const TagTrips = () => {
@@ -42,10 +44,9 @@ const TagTrips = () => {
         <div
             style={{
                 margin: 'auto',
-                padding: '15px',
-                maxWidth: '1000px',
-                alignContent: 'center',
-                marginTop: '100px'
+                padding: '120px',
+                maxWidth: '900px',
+                alignContent: 'center'
             }}
         >
             <h3 className="text-center">
@@ -64,7 +65,39 @@ const TagTrips = () => {
                                     className='rounded'
                                     src={item.imageFile}
                                     alt={item.title}
+                                    fluid
+                                    style={{
+                                        maxHeight: '250px',
+                                        margin: '5px',
+                                    }}
                                 />
+                            </MDBCol>
+                            <MDBCol md="8">
+                                <MDBCardBody>
+                                    <MDBCardTitle className='text-start'>
+                                        {item.title}
+                                    </MDBCardTitle>
+                                    <MDBCardText className='text-start'>
+                                        <small className='text-muted'>
+                                            {exception(item.description)}
+                                        </small>
+                                    </MDBCardText>
+                                    <div
+                                        style={{
+                                            float: 'right',
+                                            marginTp: '-10px'
+                                        }}
+                                    >
+                                        <MDBBtn
+                                            size='sm'
+                                            rounded
+                                            color='info'
+                                            onClick={() => navigate(`/trip/${item._id}`)}
+                                        >
+                                            Read More
+                                        </MDBBtn>
+                                    </div>
+                                </MDBCardBody>
                             </MDBCol>
                         </MDBRow>
                     </MDBCard>

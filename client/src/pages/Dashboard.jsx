@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 import { deleteTrip, getTripsByUser } from '../redux/features/tripSlice';
 import Spinner from '../components/Spinner';
 import { toast } from 'react-toastify';
+import exception from '../utility/exception';
 
 
 const Dashboard = () => {
@@ -31,12 +32,6 @@ const Dashboard = () => {
     useEffect(() => {
         user && dispatch(getTripsByUser(userId));
     }, [userId, user, dispatch]);
-
-    const exception = str => {
-        if (str?.length > 45)
-            str = str.substring(0, 45) + " ...";
-        return str;
-    };
 
     if (loading) {
         return (

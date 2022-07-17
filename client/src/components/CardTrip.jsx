@@ -8,15 +8,10 @@ import {
     MDBCardTitle,
 } from 'mdb-react-ui-kit';
 import { Link } from 'react-router-dom';
+import exception from '../utility/exception';
 
 
 const CardTrip = ({ imageFile, description, title, tags, _id, name }) => {
-
-    const exception = str => {
-        if (str?.length > 45)
-            str = str.substring(0, 45) + " ...";
-        return str;
-    };
 
     return (
         <MDBCardGroup>

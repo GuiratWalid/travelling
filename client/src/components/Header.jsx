@@ -149,6 +149,9 @@ const Header = () => {
                                 fas
                                 icon='search'
                                 onClick={handleSubmit}
+                                style={{
+                                    cursor: 'pointer'
+                                }}
                             />
                         </div>
                     </form>

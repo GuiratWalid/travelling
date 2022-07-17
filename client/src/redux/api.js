@@ -35,3 +35,5 @@ export const getTripsByUser = userId => API.get(`/trips/userTrips/${userId}`);
 export const getTripsBySearch = searchQuery => API.get(`/trips/search?searchQuery=${searchQuery}`);
 
 export const getTripsByTag = tag => API.get(`/trips/tag/${tag}`);
+
+export const getRelatedTrips = tags => API.post(`/trips/relatedTrips`, { tags });

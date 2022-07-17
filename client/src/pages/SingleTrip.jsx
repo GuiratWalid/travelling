@@ -9,18 +9,25 @@ import {
 } from 'mdb-react-ui-kit';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getTrip } from '../redux/features/tripSlice';
+import { getRelatedTrips, getTrip } from '../redux/features/tripSlice';
 import moment from 'moment';
 import Spinner from '../components/Spinner';
+import RelatedTrips from '../components/RelatedTrips';
 
 
 const SingleTrip = () => {
 
     const dispatch = useDispatch();
 
-    const { trip, loading } = useSelector(state => ({ ...state.trip }));
+    const { trip, loading, relatedTrips } = useSelector(state => ({ ...state.trip }));
 
     const { id } = useParams();
+
+    const tags = trip?.tags;
+
+    useEffect(() => {
+        tags && dispatch(getRelatedTrips(tags));
+    }, [tags]);
 
     useEffect(() => {
         dispatch(getTrip(id));
@@ -81,6 +88,10 @@ const SingleTrip = () => {
                         </MDBCardText>
                     </MDBCardBody>
                 </MDBCard>
+                <RelatedTrips
+                    relatedTrips={relatedTrips}
+                    tripId={id}
+                />
             </MDBContainer >
         </div >
     );
