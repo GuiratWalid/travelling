@@ -37,7 +37,7 @@ const CardTrip = ({ dispatch, imageFile, description, title, tags, _id, name, li
                     />
                     &nbsp;
                     {
-                        Likes.length > 2 ? (
+                        likes.length > 2 ? (
                             <MDBTooltip
                                 tag='a'
                                 title={`You and ${likes.length - 1} other likes`}
@@ -91,8 +91,8 @@ const CardTrip = ({ dispatch, imageFile, description, title, tags, _id, name, li
                 </div>
                 <span className="text-start tag-card">
                     {
-                        tags.map(tag => (
-                            <Link key={tag} to={`/trips/tag/${tag}`}>
+                        tags.map((tag, index) => (
+                            <Link key={index} to={`/trips/tag/${tag}`}>
                                 {`#${tag} `}
                             </Link>
                         ))
@@ -100,13 +100,24 @@ const CardTrip = ({ dispatch, imageFile, description, title, tags, _id, name, li
                     <MDBBtn
                         style={{
                             float: 'right',
-                            marginRight: '10px'
+                            marginRight: '10px',
+                            color: '#3322FF'
                         }}
-                        tag='a'
+                        tag='div'
                         color='none'
-                        onClick={handleLikeClick}
+                        onClick={!user?.result ? null : handleLikeClick}
                     >
-                        <Likes />
+                        {
+                            !user?.result ? (
+                                <MDBTooltip
+                                    title='Please login to like the trip'
+                                    tag='a'
+                                >
+                                    <Likes />
+                                </MDBTooltip>
+                            ) :
+                                <Likes />
+                        }
                     </MDBBtn>
                 </span>
                 <MDBCardBody>

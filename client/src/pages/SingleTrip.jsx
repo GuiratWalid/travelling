@@ -6,13 +6,15 @@ import {
     MDBCardImage,
     MDBContainer,
     MDBIcon,
+    MDBBtn,
 } from 'mdb-react-ui-kit';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getRelatedTrips, getTrip } from '../redux/features/tripSlice';
 import moment from 'moment';
 import Spinner from '../components/Spinner';
 import RelatedTrips from '../components/RelatedTrips';
+import DisqusThread from '../components/DisqueThread';
 
 
 const SingleTrip = () => {
@@ -22,6 +24,8 @@ const SingleTrip = () => {
     const { trip, loading, relatedTrips } = useSelector(state => ({ ...state.trip }));
 
     const { id } = useParams();
+
+    const navigate = useNavigate();
 
     const tags = trip?.tags;
 
@@ -57,6 +61,24 @@ const SingleTrip = () => {
                         alt={trip?.title}
                     />
                     <MDBCardBody>
+                        <MDBBtn
+                            tag='div'
+                            color='none'
+                            style={{
+                                float: 'left',
+                                color: '#000'
+                            }}
+                            onClick={() => navigate('/')}
+                        >
+                            <MDBIcon
+                                fas
+                                size='lg'
+                                icon='long-arrow-alt-left'
+                                style={{
+                                    float: 'left'
+                                }}
+                            />
+                        </MDBBtn>
                         <h3>{trip?.title}</h3>
                         <span>
                             <p className='text-start tripName'>Created By: {trip?.name}</p>
@@ -91,6 +113,12 @@ const SingleTrip = () => {
                 <RelatedTrips
                     relatedTrips={relatedTrips}
                     tripId={id}
+                />
+                <br />
+                <DisqusThread
+                    id={id}
+                    title={trip ? trip.title : ''}
+                    path={`/trip/${id}`}
                 />
             </MDBContainer >
         </div >

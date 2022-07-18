@@ -11,13 +11,24 @@ import CardTrip from '../components/CardTrip';
 import Spinner from '../components/Spinner';
 import Pagination from '../components/Pagination';
 import { setCurrentPage } from '../redux/features/tripSlice';
+import { useLocation } from 'react-router-dom';
 
+
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
 
 const Home = () => {
 
     const { trips, loading, currentPage, numberOfPages } = useSelector(state => ({ ...state.trip }));
 
     const dispatch = useDispatch();
+
+    const query = useQuery();
+
+    const searchQuery = query.get('searchQuery');
+
+    const location = useLocation();
 
     useEffect(() => {
         dispatch(getTrips(currentPage));
@@ -42,13 +53,24 @@ const Home = () => {
         >
             <MDBRow className='mt-5'>
                 {
-                    trips.length === 0 && (
+                    trips.length === 0 && location.pathname === '/' && (
                         <MDBTypography
                             className='text-center mb-0'
                             style={{ marginTop: '200px' }}
                             tag="h2"
                         >
                             No Trips Found
+                        </MDBTypography>
+                    )
+                }
+                {
+                    trips.length === 0 && location.pathname !== '/' && (
+                        <MDBTypography
+                            className='text-center mb-0'
+                            style={{ marginTop: '200px' }}
+                            tag="h2"
+                        >
+                            We couldn't find any matches for '{searchQuery}'
                         </MDBTypography>
                     )
                 }
@@ -74,12 +96,16 @@ const Home = () => {
                     </MDBContainer>
                 </MDBCol>
             </MDBRow>
-            <Pagination
-                setCurrecntPage={setCurrentPage}
-                currentPage={currentPage}
-                dispatch={dispatch}
-                numberOfPages={numberOfPages}
-            />
+            {
+                trips?.length > 0 && (
+                    <Pagination
+                        setCurrecntPage={setCurrentPage}
+                        currentPage={currentPage}
+                        dispatch={dispatch}
+                        numberOfPages={numberOfPages}
+                    />
+                )
+            }
         </div>
     );
 };

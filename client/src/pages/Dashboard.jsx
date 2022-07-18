@@ -56,78 +56,91 @@ const Dashboard = () => {
                 alignContent: 'center',
             }}
         >
-            <h4 className='text-center'>
-                Dashboard: {user?.result?.name}
-            </h4>
-            <hr style={{ maxWidth: '570px' }} />
-            {userTrips?.map(item => (
-                <MDBCardGroup
-                    key={item._id}>
-                    <MDBCard
-                        style={{ maxWidth: '600px' }}
-                        className='mt-2'
-                    >
-                        <MDBRow className='g-0'>
-                            <MDBCol md="4">
-                                <MDBCardImage
-                                    className="rounded"
-                                    src={item.imageFile}
-                                    alt={item.title}
-                                    fluid
-                                    style={{
-                                        maxHeight: '250px',
-                                        margin: '5px',
-                                    }}
-                                />
-                            </MDBCol>
-                            <MDBCol md="8">
-                                <MDBCardBody>
-                                    <MDBCardTitle className='text-start'>
-                                        {item.title}
-                                    </MDBCardTitle>
-                                    <MDBCardText className='text-start'>
-                                        <small className='text-muted'>
-                                            {exception(item.description)}
-                                        </small>
-                                    </MDBCardText>
-                                    <div
-                                        style={{
-                                            marginLeft: '5px',
-                                            float: 'right',
-                                            marginTop: '-60px',
-                                        }}
-                                    >
-                                        <MDBBtn
-                                            className='mt-1'
-                                            tag='div'
-                                            color='none'
-                                        >
-                                            <MDBIcon
-                                                fas
-                                                icon='trash'
-                                                style={{ color: '#dd4b39' }}
-                                                size='lg'
-                                                onClick={() => handleDelete(item._id)}
+            {
+                userTrips?.length === 0 && (
+                    <h3 style={{ marginTop: '150px' }}>
+                        No Trip available with the user: {user?.result?.name}
+                    </h3>
+                )
+            }
+            {
+                userTrips?.length > 0 && (
+                    <>
+                        <h5 className='text-center'>
+                            Dashboard: {user?.result?.name}
+                        </h5>
+                        <hr style={{ maxWidth: '570px' }} />
+                        {userTrips?.map(item => (
+                            <MDBCardGroup
+                                key={item._id}>
+                                <MDBCard
+                                    style={{ maxWidth: '600px' }}
+                                    className='mt-2'
+                                >
+                                    <MDBRow className='g-0'>
+                                        <MDBCol md="4">
+                                            <MDBCardImage
+                                                className="rounded"
+                                                src={item.imageFile}
+                                                alt={item.title}
+                                                fluid
+                                                style={{
+                                                    maxHeight: '250px',
+                                                    margin: '5px',
+                                                }}
                                             />
-                                            <Link to={`/editTrip/${item._id}`}>
-                                                <MDBIcon
-                                                    fas
-                                                    icon='edit'
+                                        </MDBCol>
+                                        <MDBCol md="8">
+                                            <MDBCardBody>
+                                                <MDBCardTitle className='text-start'>
+                                                    {item.title}
+                                                </MDBCardTitle>
+                                                <MDBCardText className='text-start'>
+                                                    <small className='text-muted'>
+                                                        {exception(item.description)}
+                                                    </small>
+                                                </MDBCardText>
+                                                <div
                                                     style={{
-                                                        color: '#55acee',
-                                                        marginLeft: '10px',
+                                                        marginLeft: '5px',
+                                                        float: 'right',
+                                                        marginTop: '-60px',
                                                     }}
-                                                    size='lg'
-                                                />
-                                            </Link>
-                                        </MDBBtn>
-                                    </div>
-                                </MDBCardBody>
-                            </MDBCol>
-                        </MDBRow>
-                    </MDBCard>
-                </MDBCardGroup>
-            ))}
+                                                >
+                                                    <MDBBtn
+                                                        className='mt-1'
+                                                        tag='div'
+                                                        color='none'
+                                                    >
+                                                        <MDBIcon
+                                                            fas
+                                                            icon='trash'
+                                                            style={{ color: '#dd4b39' }}
+                                                            size='lg'
+                                                            onClick={() => handleDelete(item._id)}
+                                                        />
+                                                        <Link to={`/editTrip/${item._id}`}>
+                                                            <MDBIcon
+                                                                fas
+                                                                icon='edit'
+                                                                style={{
+                                                                    color: '#55acee',
+                                                                    marginLeft: '10px',
+                                                                }}
+                                                                size='lg'
+                                                            />
+                                                        </Link>
+                                                    </MDBBtn>
+                                                </div>
+                                            </MDBCardBody>
+                                        </MDBCol>
+                                    </MDBRow>
+                                </MDBCard>
+                            </MDBCardGroup>
+                        ))}
+                    </>
+                )
+            }
         </div>
     );
 };
