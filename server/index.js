@@ -28,6 +28,10 @@ app.use(cors());
 app.use("/users", userRouter);
 app.use("/trips", tripRouter);
 
+app.get('/', (req, res) => {
+    res.send('Welcome to Trip API');
+});
+
 mongoose.connect(MONGODB_URL)
     .then(() => {
         app.listen(PORT, () => {
