@@ -35,14 +35,21 @@ const Login = () => {
 
     const navigate = useNavigate();
 
+    // prod -> 394690414160-so4bm60imi3uc3kgqk6b5kiv0b0cd4iq.apps.googleusercontent.com
+
+    const devEnv = process.env.NODE_ENV !== "production";
+
+    const clientId = devEnv
+        ? '394690414160-qp153jod9qkbk0tq78f2v0sbeau9fhb3.apps.googleusercontent.com'
+        : '394690414160-so4bm60imi3uc3kgqk6b5kiv0b0cd4iq.apps.googleusercontent.com';
+
     useEffect(() => {
         error && toast.error(error);
     }, [error]);
 
     gapi.load("client:auth2", () => {
         gapi.client.init({
-            clientId:
-                "394690414160-qp153jod9qkbk0tq78f2v0sbeau9fhb3.apps.googleusercontent.com",
+            clientId: clientId,
             plugin_name: "travelling",
         });
     });
@@ -141,7 +148,7 @@ const Login = () => {
                     </MDBValidation>
                     <br />
                     <GoogleLogin
-                        clientId="394690414160-qp153jod9qkbk0tq78f2v0sbeau9fhb3.apps.googleusercontent.com"
+                        clientId={clientId}
                         render={(renderProps) => (
                             < MDBBtn
                                 style={{ width: '100%' }}
